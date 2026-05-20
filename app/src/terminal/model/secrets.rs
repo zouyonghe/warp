@@ -1,15 +1,16 @@
 #![allow(dead_code)]
 
-use std::collections::HashMap;
-use std::ops::{Not, RangeInclusive};
-use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::Arc;
-
+use crate::ai::blocklist::TextLocation;
+use crate::terminal::model::index::Point;
 use anyhow::anyhow;
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use parking_lot::Mutex;
 use rangemap::{RangeInclusiveMap, StepLite};
+use std::collections::HashMap;
+use std::ops::{Not, RangeInclusive};
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::Arc;
 use warpui::elements::SecretRange;
 use warpui::EntityId;
 
@@ -19,6 +20,19 @@ use super::terminal_model::RangeInModel;
 use crate::ai::blocklist::TextLocation;
 use crate::terminal::model::find::RegexDFAs;
 use crate::terminal::model::index::Point;
+
+/// A regex pattern that can be used to detect secrets in text.
+pub struct SecretsRegex {
+    /// The regex pattern to match secrets in strings.  This is a meta::Regex which supports
+    /// multiple patterns.
+    pub regex: regex_automata::meta::Regex,
+
+    /// The DFAs used to search for secrets in the grid.
+    pub dfas: RegexDFAs,
+
+    /// Metadata about the regex pattern, including which secret levels it corresponds to.
+    pub level_metadata: RegexLevelMetadata,
+}
 
 /// A regex pattern that can be used to detect secrets in text.
 pub struct SecretsRegex {
