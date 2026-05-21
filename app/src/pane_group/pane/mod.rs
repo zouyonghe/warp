@@ -33,6 +33,29 @@ pub mod workflow_pane;
 use std::any::Any;
 use std::fmt::Display;
 
+#[cfg(feature = "local_fs")]
+use crate::code::buffer_location::LocalOrRemotePath;
+use crate::pane_group::focus_state::PaneFocusHandle;
+use crate::pane_group::pane::get_started_view::GetStartedView;
+use crate::view_components::action_button::ActionButton;
+use crate::{
+    ai::execution_profiles::editor::ExecutionProfileEditorView,
+    ai::{
+        ai_document_view::AIDocumentView, blocklist::inline_action::code_diff_view::CodeDiffView,
+        facts::AIFactView,
+    },
+    code::view::CodeView,
+    drive::sharing::ShareableObject,
+    env_vars::view::env_var_collection::EnvVarCollectionView,
+    menu::MenuItem,
+    notebooks::{file::FileNotebookView, notebook::NotebookView},
+    server::network_log_view::NetworkLogView,
+    server::telemetry::SharingDialogSource,
+    settings::PaneSettings,
+    settings_view::{environments_page::EnvironmentsPageView, SettingsView},
+    terminal::{available_shells::AvailableShell, TerminalView},
+    workflows::workflow_view::WorkflowView,
+};
 use serde::{Deserialize, Serialize};
 use url::Url;
 use warp_util::remote_path::RemotePath;
