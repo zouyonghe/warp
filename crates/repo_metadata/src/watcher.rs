@@ -322,9 +322,8 @@ impl DirectoryWatcher {
         let registration_future = if let Some(ref watcher) = self.watcher {
             if let Some(local_path) = local_path.clone() {
                 watcher.update(ctx, |watcher, _ctx| {
-                    use notify_debouncer_full::notify::RecursiveMode;
-
                     use crate::entry::repo_watch_filter;
+                    use notify_debouncer_full::notify::RecursiveMode;
 
                     Some(watcher.register_path(
                         &local_path,

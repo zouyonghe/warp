@@ -170,9 +170,8 @@ fn test_git_path_filtering_allowlist() {
 
 #[test]
 fn should_watch_directory_in_git_path_prunes_non_allowlisted_subtrees() {
-    use std::path::Path;
-
     use super::should_watch_directory_in_git_path;
+    use std::path::Path;
     for path in [
         "/repo/.git",
         "/repo/.git/refs",
@@ -220,9 +219,10 @@ fn should_watch_directory_in_git_path_prunes_non_allowlisted_subtrees() {
 }
 #[test]
 fn test_is_shared_git_ref() {
+    use super::is_shared_git_ref;
     use std::path::Path;
 
-    use super::is_shared_git_ref;
+    use super::should_watch_directory_in_git_path;
 
     // Shared refs — broadcast to all repos
     assert!(is_shared_git_ref(Path::new("/repo/.git/refs/heads/main")));
