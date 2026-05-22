@@ -14,6 +14,7 @@ license = "MIT"
 enable-metal-frame-capture = []
 # Enables the font-kit rasterizer on Windows.
 fontkit-rasterizer = []
+decommercialized = ["warpui_core/decommercialized"]
 traces = ["warpui_core/traces"]
 # Feature enabled only when app is compiled for integration tests.
 integration_tests = ["warpui_core/integration_tests"]

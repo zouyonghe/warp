@@ -7,6 +7,7 @@ publish.workspace = true
 license = "MIT"
 
 [features]
+decommercialized = []
 traces = []
 # Feature enabled only when app is compiled for integration tests.
 integration_tests = ["dep:minimp4", "dep:openh264"]

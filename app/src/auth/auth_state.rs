@@ -319,7 +319,11 @@ impl AuthState {
     /// during the transient state where credentials exist but user data hasn't loaded
     /// yet, the user is conservatively treated as lacking a full account.
     pub fn is_anonymous_or_logged_out(&self) -> bool {
-        !self.is_logged_in() || self.is_user_anonymous().unwrap_or(true)
+        if cfg!(feature = "decommercialized") {
+            false
+        } else {
+            !self.is_logged_in() || self.is_user_anonymous().unwrap_or(true)
+        }
     }
 
     /// Returns the cached access token, if any exists. This method *will not* check if the JWT is

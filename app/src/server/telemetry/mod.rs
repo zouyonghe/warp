@@ -92,6 +92,12 @@ impl TelemetryApi {
     // Batches up telemetry events from the global queue and sends a Message to the Rudderstack API.
     // Returns the number of events that were flushed.
     pub async fn flush_events(&self, settings_snapshot: PrivacySettingsSnapshot) -> Result<usize> {
+        if cfg!(feature = "decommercialized") {
+            let _ = settings_snapshot;
+            clear_event_queue();
+            return Ok(0);
+        }
+
         let events = warpui::telemetry::flush_events();
         let event_count = events.len();
 
@@ -121,6 +127,11 @@ impl TelemetryApi {
         path: &Path,
         settings_snapshot: PrivacySettingsSnapshot,
     ) -> Result<()> {
+        if cfg!(feature = "decommercialized") {
+            let _ = (path, settings_snapshot);
+            return Ok(());
+        }
+
         if path.exists() {
             let file = File::open(path)?;
             let events: Vec<RudderBatchMessage> = serde_json::from_reader(file)?;
@@ -162,6 +173,12 @@ impl TelemetryApi {
         settings_snapshot: PrivacySettingsSnapshot,
         path: impl AsRef<Path>,
     ) -> Result<()> {
+        if cfg!(feature = "decommercialized") {
+            let _ = (max_event_count, settings_snapshot, path.as_ref());
+            clear_event_queue();
+            return Ok(());
+        }
+
         if settings_snapshot.should_disable_telemetry() {
             log::info!("Not writing queued events to disk because telemetry is disabled.");
             return Result::Ok(());
@@ -241,6 +258,11 @@ impl TelemetryApi {
         settings_snapshot: PrivacySettingsSnapshot,
     ) -> impl Future<Output = Result<()>> + '_ {
         let work = async move {
+            if cfg!(feature = "decommercialized") {
+                let _ = (event, settings_snapshot);
+                return Result::Ok(());
+            }
+
             if settings_snapshot.should_disable_telemetry() {
                 log::info!("Not sending telemetry event because telemetry is disabled.");
                 return Result::Ok(());
@@ -305,6 +327,11 @@ impl TelemetryApi {
         messages: Vec<RudderBatchMessageWithMetadata>,
         settings_snapshot: PrivacySettingsSnapshot,
     ) -> Result<()> {
+        if cfg!(feature = "decommercialized") {
+            let _ = (messages, settings_snapshot);
+            return Ok(());
+        }
+
         if messages.is_empty() {
             log::debug!("Dropping empty RudderStack telemetry batch");
             return Ok(());
