@@ -2,6 +2,19 @@
     "documentation": "See the README.md file in this directory.",
     "channels": [
         {
+            "channel": "oss",
+            "type": "nightly",
+            "is_prerelease": true,
+            "is_autopush": false,
+            "release_base_name": "OSS Release",
+            "release_body_text": "Warp OSS release",
+            "sentry_project": "warp-client-dev",
+            "sentry_environment": "oss_release",
+            "changelog_slack_channel": "#dev-beta-changelogs",
+            "gcs_cache_control_value": "private, max-age=604800, immutable",
+            "web_gcs_bucket_prefix": "warp-server-staging"
+        },
+        {
             "channel": "dev",
             "type": "nightly",
             "is_prerelease": true,
