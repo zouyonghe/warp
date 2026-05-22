@@ -51,8 +51,6 @@ use pathfinder_color::ColorU;
 use pathfinder_geometry::rect::RectF;
 #[cfg(feature = "local_fs")]
 use repo_metadata::repositories::DetectedRepositories;
-#[cfg(feature = "local_fs")]
-use repo_metadata::RemoteRepositoryIdentifier;
 #[cfg(all(target_os = "macos", feature = "crash_reporting"))]
 use sentry::protocol::{Attachment, AttachmentType};
 use serde_json;
